@@ -2,12 +2,24 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
+func init() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("Error load ENV")
+	}
+}
+
 func main() {
-	port := "8001"
+	port := os.Getenv("port")
+
+	if port == "" {
+		port = "8001"
+	}
 
 	gin.SetMode(gin.ReleaseMode)
 
