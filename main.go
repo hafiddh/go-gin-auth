@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/hafiddh/go-gin-auth/db"
 	"github.com/joho/godotenv"
 )
 
@@ -12,9 +13,20 @@ func init() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("Error load ENV")
 	}
+
+	db.ConnectDB()
 }
 
 func main() {
+
+	sqlDB, err := db.DBcon.DB()
+
+	if err != nil {
+		log.Println("Error get DB conn")
+	}
+
+	defer sqlDB.Close()
+
 	port := os.Getenv("port")
 
 	if port == "" {
